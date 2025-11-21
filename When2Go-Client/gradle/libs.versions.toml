@@ -1,0 +1,68 @@
+[versions]
+agp = "8.13.0"
+android-compileSdk = "36"
+android-minSdk = "24"
+android-targetSdk = "36"
+androidx-activity = "1.11.0"
+#androidx-appcompat = "1.7.1"
+#androidx-core = "1.17.0"
+androidx-lifecycle = "2.9.5"
+cmptoast = "1.0.71"
+composeMultiplatform = "1.9.2"
+kotlin = "2.2.21"
+ktorClientCio = "3.3.1"
+ktorClientCore = "3.3.1"
+materialIconsExtended = "1.7.3"
+compass = "2.4.1"
+composePwa = "0.4.1"
+kermit = "2.0.8"
+settings = "1.3.0"
+
+[libraries]
+cmptoast = { module = "network.chaintech:cmptoast", version.ref = "cmptoast" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+#androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+#androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+#kotlinx-serializa = { module = "org.jetbrains.kotlinx:kotlinx-serializa" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientCore" }
+#ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClientCio" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClientCore" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientCio" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClientCio" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientCio" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorClientCio" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorClientCio" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorClientCio" }
+material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+compass-geocoder = { module = "dev.jordond.compass:geocoder", version.ref = "compass" }
+compass-geocoder-mobile = { module = "dev.jordond.compass:geocoder-mobile", version.ref = "compass" }
+compass-geocoder-web = { module = "dev.jordond.compass:geocoder-web", version.ref = "compass" }
+compass-geolocation = { module = "dev.jordond.compass:geolocation", version.ref = "compass" }
+compass-geolocation-mobile = { module = "dev.jordond.compass:geolocation-mobile", version.ref = "compass" }
+compass-geolocation-browser = { module = "dev.jordond.compass:geolocation-browser", version.ref = "compass" }
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings" }
+settings-serialization = { module = "com.russhwolf:multiplatform-settings-serialization", version.ref = "settings" }
+settings-noarg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "settings" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+composePwa = { id = "dev.yuyuyuyuyu.composepwa", version.ref = "composePwa" }
+
+[bundles]
+ktorClientCio = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-client-auth",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
+]
