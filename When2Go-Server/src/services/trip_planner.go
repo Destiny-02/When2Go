@@ -130,6 +130,14 @@ func PopulateDeparturesAtStop(stop models.Stop) (models.Stop, error) {
 		stop.StopPoints[i].Departures = extractDepartures(*departureResp)
 	}
 
+	filteredStopPopints := []models.StopPoint{}
+	for _, currStop := range stop.StopPoints {
+		if len(currStop.Departures) > 0 {
+			filteredStopPopints = append(filteredStopPopints, currStop)
+		}
+	}
+	stop.StopPoints = filteredStopPopints
+
 	return stop, nil
 }
 

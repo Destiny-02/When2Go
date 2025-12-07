@@ -26,8 +26,8 @@ func HandleNearestLRDepartures(w http.ResponseWriter, r *http.Request) {
 		stopSearchLon = req.TargetStopCoord.Longitude
 	}
 	stop, allStops, err := services.CoordToNearestLRStop(stopSearchLat, stopSearchLon)
-	if err != nil || stop == nil {
-		http.Error(w, "Failed to get nearest stop ID", http.StatusInternalServerError)
+	if err != nil || stop == nil || len(allStops) <= 0 {
+		http.Error(w, "Failed to get nearest stops", http.StatusInternalServerError)
 		return
 	}
 	log.Printf("Nearest stop ID: %s with %d stop points", stop.ID, len(stop.StopPoints))
