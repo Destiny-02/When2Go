@@ -1,102 +1,61 @@
 package services
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 
 	"when2go/src/models"
 )
 
 func GetWalkingDistanceAndTime(latitudeFrom float64, longitudeFrom float64, latitudeTo float64, longitudeTo float64) (int64, int64, error) {
-	apiKey, err := getAPIKey("ROUTE_API_KEY")
+	apiKey, err := getAPIKey("OPEN_ROUTE_SERVICE_API_KEY")
 	if err != nil {
 		log.Printf("%v", err)
 		return 0, 0, err
 	}
 
-	routeRequest := models.RouteRequest{
-		Origins: []models.Origin{
-			{
-				Waypoint: models.Waypoint{
-					Location: models.RouteAPILocation{
-						LatLng: models.LatLng{
-							Latitude:  latitudeFrom,
-							Longitude: longitudeFrom,
-						},
-					},
-				},
-			},
-		},
-		Destinations: []models.Destination{
-			{
-				Waypoint: models.Waypoint{
-					Location: models.RouteAPILocation{
-						LatLng: models.LatLng{
-							Latitude:  latitudeTo,
-							Longitude: longitudeTo,
-						},
-					},
-				},
-			},
-		},
-		TravelMode: "WALK",
-	}
-	requestBody, err := json.Marshal(routeRequest)
+	params := make(url.Values)
+	params.Set("api_key", apiKey)
+	params.Set("start", fmt.Sprintf("%f,%f", longitudeFrom, latitudeFrom))
+	params.Set("end", fmt.Sprintf("%f,%f", longitudeTo, latitudeTo))
+
+	directionsApiEndpoint := "https://api.openrouteservice.org/v2/directions/foot-walking"
+	urlStr := fmt.Sprintf("%s?%s", directionsApiEndpoint, params.Encode())
+
+	req, err := http.NewRequest("GET", urlStr, nil)
 	if err != nil {
-		log.Printf("Error marshalling route request: %v", err)
+		log.Printf("Error creating request to ORS API: %v", err)
 		return 0, 0, err
 	}
-	req, err := http.NewRequest("POST", "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix", bytes.NewBuffer(requestBody))
-	if err != nil {
-		log.Printf("Error creating request to Route API: %v", err)
-		return 0, 0, err
-	}
-	req.Header.Set("accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Goog-FieldMask", "duration,distanceMeters")
-	req.Header.Set("X-Goog-Api-Key", apiKey)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("Error making request to Route API: %v", err)
+		log.Printf("Error making request to ORS API: %v", err)
 		return 0, 0, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		log.Printf("Route API returned non-OK status: %d", resp.StatusCode)
+		log.Printf("ORS API returned non-OK status: %d", resp.StatusCode)
 		return 0, 0, fmt.Errorf("route api returned status: %d", resp.StatusCode)
 	}
 
 	var routeResponse models.RouteResponse
 	if err := json.NewDecoder(resp.Body).Decode(&routeResponse); err != nil {
-		log.Printf("Error decoding Route API response: %v", err)
+		log.Printf("Error decoding ORS API response: %v", err)
 		return 0, 0, err
 	}
 
-	if len(routeResponse) == 0 {
-		log.Printf("No results in Route API response")
+	if len(routeResponse.Features) == 0 {
+		log.Printf("No results in ORS API response")
 		return 0, 0, fmt.Errorf("no results in route api response")
 	}
 
-	duration, err := convertDurationStringToSeconds(routeResponse[0].Duration)
-	if err != nil {
-		log.Printf("Error converting duration string to seconds: %v", err)
-		return 0, 0, err
-	}
+	summary := routeResponse.Features[0].Properties.Summary
 
-	return routeResponse[0].DistanceMeters, duration, nil
-}
-
-func convertDurationStringToSeconds(durationStr string) (int64, error) {
-	var durationSeconds int64
-	_, err := fmt.Sscanf(durationStr, "%ds", &durationSeconds)
-	if err != nil {
-		return 0, fmt.Errorf("invalid duration format: %s", durationStr)
-	}
-	return durationSeconds, nil
+	return int64(summary.Distance), int64(summary.Duration), nil
 }

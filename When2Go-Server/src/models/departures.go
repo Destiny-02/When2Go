@@ -77,36 +77,15 @@ type StopEvent struct {
 	} `json:"transportation"`
 }
 
-// Structures for Route API
+// Structures for Open Route Service API
 
-type LatLng struct {
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
-
-type RouteAPILocation struct {
-	LatLng LatLng `json:"latLng"`
-}
-
-type Waypoint struct {
-	Location RouteAPILocation `json:"location"`
-}
-
-type Origin struct {
-	Waypoint Waypoint `json:"waypoint"`
-}
-
-type Destination struct {
-	Waypoint Waypoint `json:"waypoint"`
-}
-
-type RouteRequest struct {
-	Origins      []Origin      `json:"origins"`
-	Destinations []Destination `json:"destinations"`
-	TravelMode   string        `json:"travelMode"`
-}
-
-type RouteResponse []struct {
-	DistanceMeters int64  `json:"distanceMeters"`
-	Duration       string `json:"duration"`
+type RouteResponse struct {
+	Features []struct {
+		Properties struct {
+			Summary struct {
+				Distance float64 `json:"distance"` // Distance in meters
+				Duration float64 `json:"duration"` // Duration in seconds
+			} `json:"summary"`
+		} `json:"properties"`
+	} `json:"features"`
 }

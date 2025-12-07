@@ -2,8 +2,8 @@
 
 ## Prerequisites
 - Create a Trip Planner API key from [here](https://opendata.transport.nsw.gov.au/developers/api-basics)
-- Create a [Route API](https://console.cloud.google.com/marketplace/product/google/routes.googleapis.com) key
-- Add a `.env` file with `TRIP_PLANNER_API_KEY=apiKey xxx` and `ROUTE_API_KEY=xxx`
+- Create a [Open Route Service API](https://openrouteservice.org/) key
+- Add a `.env` file with `TRIP_PLANNER_API_KEY=apiKey xxx` and `OPEN_ROUTE_SERVICE_API_KEY=xxx`
 
 
 ## Run the Server
