@@ -7,6 +7,8 @@
 
 
 ## Run the Server
+- Uncomment the `ListenAndServe` code, and comment to AWS lambda code below
+- Run the server
 ```
 go run src/main.go
 ```
@@ -14,7 +16,7 @@ go run src/main.go
 
 ## Call the API
 ```
-http://localhost:8080/nearest-lr-departures
+http://localhost:8080/
 ```
 __Body__
 ```
@@ -22,4 +24,10 @@ __Body__
     "latitude": -33.881621828090495,
     "longitude": 151.20590441515088
 }
+```
+
+## Create the Deployment ZIP
+```
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go
+zip function.zip bootstrap  
 ```
