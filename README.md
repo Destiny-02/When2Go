@@ -8,7 +8,7 @@ Recommended: Add it to your home screen as a shortcut!
 
 ## Features
 - Cross platform (Android, iOS, web)
-- Save nearby stop and travel direction preferences
+- Saves nearby stop and travel direction preferences
 - Realtime tracking
 - Auto refresh (30s) and manual refresh
 
