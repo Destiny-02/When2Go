@@ -1,8 +1,6 @@
 {
     "name": "When2Go",
     "short_name": "When2Go",
-    "theme_color": "#b52d2d",
-    "background_color": "#F8F8F8",
     "display": "standalone",
     "scope": "./",
     "start_url": "./",
